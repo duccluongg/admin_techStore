@@ -1,0 +1,127 @@
+.container {
+  height: 100%;
+  &__col3 {
+    .ant-layout-sider {
+      min-height: 100vh;
+    }
+  }
+  &__col7 {
+    width: 87%;
+  }
+}
+.ant-layout-sider {
+  height: 100%;
+}
+.container__col7__box {
+  padding: 30px;
+  &__name {
+    font-size: 20px;
+    font-weight: 600;
+  }
+  &__row {
+    margin-top: 20px;
+    display: flex;
+  }
+  .row__col6 {
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    .col6 {
+      width: 45%;
+      margin-right: 15px;
+    }
+  }
+}
+.status-card {
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  border-radius: 15px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: color 0.5s ease 0s;
+  margin-bottom: 30px;
+}
+
+.status-card__icon {
+  width: 30%;
+  height: 100%;
+  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.status-card__info {
+  flex-grow: 1;
+  text-align: center;
+  z-index: 1;
+  text-transform: capitalize;
+}
+
+.status-card__info__total {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.status-card::before {
+  content: '';
+  width: 100%;
+  padding-top: 100%;
+  border-radius: 50%;
+  background-image: linear-gradient(to top right, #349eff, #62b4ff);
+  position: absolute;
+  left: -50%;
+  top: 0;
+  transform: scale(0);
+  transition: transform 0.8s ease 0s;
+}
+
+.status-card:hover::before {
+  transform: scale(3);
+}
+.status-card.active::before {
+  transform: scale(3);
+}
+.status-card.active {
+  color: #fff;
+}
+.status-card:hover {
+  color: #ffffff;
+}
+
+.card .full-height {
+  height: calc(100% - 30px);
+}
+.card {
+  padding: 30px;
+  margin-bottom: 30px;
+  background-color: #fff;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  border-radius: 15px;
+}
+.box__row__table__costumers,
+.box__row__table__order {
+  border-radius: 15px;
+  padding: 30px;
+  background-color: #fff;
+  margin-right: 30px;
+  &__name {
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+}
+
+.sweetLoading {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  align-items: center;
+  background-color: #fff;
+}

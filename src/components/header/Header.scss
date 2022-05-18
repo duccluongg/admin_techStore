@@ -1,0 +1,30 @@
+.header__component {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  background-color: #fff;
+  .box__header {
+    display: flex;
+    align-items: center;
+    margin: 15px 0px;
+    margin-right: 50px;
+    &__img {
+      margin-right: 20px;
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+      }
+    }
+    &__name {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    display: flex;
+  }
+}
+.box__header__name {
+  &__name:hover {
+    cursor: pointer;
+  }
+}

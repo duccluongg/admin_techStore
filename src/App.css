@@ -1,0 +1,14 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,
+body {
+  font-size: 14px;
+  color: #333;
+  background-color: #f0f2f5;
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+@import '~antd/dist/antd.css';

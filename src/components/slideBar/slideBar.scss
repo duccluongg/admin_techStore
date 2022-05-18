@@ -1,0 +1,14 @@
+.header__slider {
+  display: flex;
+  align-items: center;
+  margin: 20px;
+  .name {
+    font-size: 20px;
+    color: #fff;
+    margin-left: 10px;
+  }
+  .logo i {
+    font-size: 18px;
+    color: #fff;
+  }
+}
