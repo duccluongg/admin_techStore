@@ -32,6 +32,7 @@ const EditModal = ({ showEditModal, isEditModalOk = () => {} }) => {
   }, [productDetail?.id]);
 
   const onFinish = (values) => {
+    console.log('hi');
     dispatch(updateProduct({ values: values, id: productDetail?.id }));
     isEditModalOk();
     Swal.fire({
@@ -54,12 +55,12 @@ const EditModal = ({ showEditModal, isEditModalOk = () => {} }) => {
       visible={showEditModal}
       onCancel={isEditModalOk}
       width={600}
-      footer={[
-        <Button onClick={isEditModalOk}>Cancel</Button>,
-        <Button type="primary" key="submit" htmlType="submit" form="myForm">
-          Submit
-        </Button>,
-      ]}
+      // footer={[
+      //   <Button onClick={isEditModalOk}>Cancel</Button>,
+      //   <Button type="primary" key="submit" htmlType="submit" form="myForm">
+      //     Submit
+      //   </Button>,
+      // ]}
     >
       <Form
         className="box__addProduct"
@@ -232,6 +233,11 @@ const EditModal = ({ showEditModal, isEditModalOk = () => {} }) => {
             </Form.Item>
           </div>
         </div>
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
       </Form>
     </Modal>
   );

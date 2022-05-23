@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   getListOrder,
   getListUser,
-  getListProduct,
+  getTotalProduct,
 } from '../../utils/AdminSlice';
 import ClipLoader from 'react-spinners/ClipLoader';
 
@@ -18,7 +18,8 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const listUser = useSelector((s) => s.admin.listUser) || [];
   const listOrder = useSelector((s) => s.admin.listOrder) || [];
-  const listProduct = useSelector((s) => s.admin.listProduct) || [];
+  const listProduct = useSelector((s) => s.admin.totalProduct) || '';
+  console.log(listProduct);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const Dashboard = () => {
     }, 2000);
     dispatch(getListUser());
     dispatch(getListOrder());
-    dispatch(getListProduct());
+    dispatch(getTotalProduct());
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -125,13 +126,9 @@ const Dashboard = () => {
                         <i class="fas fa-laptop"></i>
                       </div>
                       <div className="status-card__info">
-                        {listProduct.total !== null ? (
-                          <div className="status-card__info__total">
-                            {listProduct.total}
-                          </div>
-                        ) : (
-                          <div>0</div>
-                        )}
+                        <div className="status-card__info__total">
+                          {listProduct}
+                        </div>
                         <span>product</span>
                       </div>
                     </div>

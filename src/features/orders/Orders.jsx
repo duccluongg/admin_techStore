@@ -3,17 +3,23 @@ import Header from '../../components/header/Header';
 import SlideBar from '../../components/slideBar/slideBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { getListOrder } from '../../utils/AdminSlice';
-import { Table, Tag, Space } from 'antd';
 import './Order.scss';
 import OrderModal from './OrderModal';
+import { Table, Tag, Space } from 'antd';
+import ClipLoader from 'react-spinners/ClipLoader';
 const Orders = () => {
   const dispatch = useDispatch();
   const listOrder = useSelector((s) => s.admin.listOrder) || [];
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+
+  setTimeout(() => {
+    setLoading(false);
+  }, 1500);
 
   useEffect(() => {
     dispatch(getListOrder());
@@ -72,24 +78,32 @@ const Orders = () => {
     },
   ];
   return (
-    <div className="container">
-      <div className="container__col3">
-        <SlideBar />
-      </div>
-      <div className="container__col7">
-        <Header />
-        <div className="container__order">
-          <div className="container__order__header">Orders</div>
-          <div className="container__order__table">
-            <Table columns={column1s} dataSource={listOrder} />;
-            <OrderModal
-              handleCancel={handleCancel}
-              isModalVisible={isModalVisible}
-            />
+    <React.Fragment>
+      {loading ? (
+        <div className="sweetLoading">
+          <ClipLoader loading={loading} size={50} />
+        </div>
+      ) : (
+        <div className="container">
+          <div className="container__col3">
+            <SlideBar />
+          </div>
+          <div className="container__col7">
+            <Header />
+            <div className="container__order">
+              <div className="container__order__header">Orders</div>
+              <div className="container__order__table">
+                <Table columns={column1s} dataSource={listOrder} />;
+                <OrderModal
+                  handleCancel={handleCancel}
+                  isModalVisible={isModalVisible}
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </React.Fragment>
   );
 };
 

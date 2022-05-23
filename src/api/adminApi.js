@@ -29,8 +29,16 @@ function getListOrder() {
     },
   });
 }
-function getListProduct(payload) {
-  return axiosClient.get(URL.getListProduct + `${payload}`);
+function getListProduct({ categoryId, brandId }) {
+  console.log(categoryId, brandId);
+  return axiosClient.get(
+    URL.getListProduct +
+      `lite?page=1&page_size=20&category=${categoryId}&brand=${brandId}`
+  );
+}
+
+function getTotalProduct() {
+  return axiosClient.get(URL.getListProduct);
 }
 
 function getListCategory() {
@@ -70,7 +78,6 @@ function delUser(data) {
 }
 
 function updateProduct(values, id) {
-  console.log(values, id);
   return axiosClient.put(URL.updateProduct + `/${id}`, values, {
     headers: {
       Authorization: `${localStorage.getItem(storageUser.TOKEN)}`,
@@ -92,4 +99,5 @@ export default {
   getProductDetail,
   updateProduct,
   delUser,
+  getTotalProduct,
 };

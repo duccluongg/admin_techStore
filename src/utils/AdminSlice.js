@@ -29,10 +29,23 @@ export const getListOrder = createAsyncThunk(
 
 export const getListProduct = createAsyncThunk(
   'getListProduct',
+  async ({ categoryId, brandId }, { rejectWithValue }) => {
+    try {
+      const response = await adminApi.getListProduct({ categoryId, brandId });
+      return response.data.results;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getTotalProduct = createAsyncThunk(
+  'getTotalProduct',
   async (payload, { rejectWithValue }) => {
     try {
-      const response = await adminApi.getListProduct(payload);
-      return response.data.results;
+      const response = await adminApi.getTotalProduct();
+      return response.data.total;
     } catch (error) {
       console.log(error);
       return rejectWithValue(error.response.data);
@@ -81,9 +94,11 @@ export const getProductDetail = createAsyncThunk(
 export const addNewProduct = createAsyncThunk(
   'addNewProduct',
   async (payload, { rejectWithValue, dispatch }) => {
+    const categoryId = payload.category_id;
+    const brandId = payload.brand_id;
     try {
       const response = await adminApi.addNewProduct(payload);
-      dispatch(getListProduct());
+      dispatch(getListProduct({ categoryId, brandId }));
       return response.data;
     } catch (error) {
       console.log(error);
@@ -93,10 +108,11 @@ export const addNewProduct = createAsyncThunk(
 );
 export const delProduct = createAsyncThunk(
   'delProduct',
-  async (payload, { rejectWithValue, dispatch }) => {
+  async ({ id, categoryId, brandId }, { rejectWithValue, dispatch }) => {
     try {
-      const response = await adminApi.delProduct(payload);
-      dispatch(getListProduct());
+      console.log(id);
+      const response = await adminApi.delProduct(id);
+      dispatch(getListProduct({ categoryId, brandId }));
       return response.data;
     } catch (error) {
       console.log(error);
@@ -143,6 +159,7 @@ const adminSlice = createSlice({
     listBrand: [],
     newProduct: {},
     productDetail: {},
+    totalProduct: '',
   },
   reducers: {
     clearState: (state) => {
@@ -182,6 +199,18 @@ const adminSlice = createSlice({
     [getListProduct.rejected]: (state, { payload }) => {
       state.errorMessage = 'bị lỗi';
       state.status = 'getListProduct.rejected';
+    },
+
+    [getTotalProduct.pending]: (state) => {
+      state.status = 'getTotalProduct.pending';
+    },
+    [getTotalProduct.fulfilled]: (state, { payload }) => {
+      state.totalProduct = payload;
+      state.status = 'getTotalProduct.fullfilled';
+    },
+    [getTotalProduct.rejected]: (state, { payload }) => {
+      state.errorMessage = 'bị lỗi';
+      state.status = 'getTotalProduct.rejected';
     },
     [getListCategory.pending]: (state) => {
       state.status = 'getListCategory.pending';

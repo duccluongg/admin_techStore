@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
 import { Select, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import PulseLoader from 'react-spinners/PulseLoader';
 import {
   getListCategory,
   getListBrand,
@@ -23,6 +24,7 @@ import Swal from 'sweetalert2';
 const Product = () => {
   const { Option } = Select;
   const [loading, setLoading] = useState(true);
+  const [smallLoading, setSmallLoading] = useState(false);
   const dispatch = useDispatch();
   const category = useSelector((s) => s.admin.listCategory) || [];
   const brand = useSelector((s) => s.admin.listBrand) || [];
@@ -43,7 +45,6 @@ const Product = () => {
   const editProduct = (id) => {
     showEditModal();
     dispatch(getProductDetail(id));
-    console.log(id);
   };
 
   const isEditModalOk = () => {
@@ -61,7 +62,7 @@ const Product = () => {
   }, []);
 
   const filters = {
-    page_size: 220,
+    page_size: 20,
     page: 1,
   };
 
@@ -70,13 +71,6 @@ const Product = () => {
   setTimeout(() => {
     setLoading(false);
   }, 1500);
-
-  useEffect(() => {
-    dispatch(
-      getListProduct(`/lite?${param}&category=${categoryId}&brand=${brandId}`)
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryId, brandId]);
 
   useEffect(() => {
     const token = localStorage.getItem(storageUser.TOKEN);
@@ -93,7 +87,16 @@ const Product = () => {
     setBrandId(value);
   }
 
-  const getProductId = (id) => {
+  useEffect(() => {
+    dispatch(getListProduct({ categoryId, brandId }));
+    setSmallLoading(true);
+    setTimeout(() => {
+      setSmallLoading(false);
+    }, 500);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categoryId, brandId]);
+
+  const getProductId = ({ id, categoryId, brandId }) => {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -104,8 +107,13 @@ const Product = () => {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
+        setSmallLoading(true);
+        dispatch(delProduct({ id, categoryId, brandId }));
+        console.log({ id, category, brand });
+        setTimeout(() => {
+          setSmallLoading(false);
+        }, 1000);
         Swal.fire('Deleted!', 'Your Product has been deleted.', 'success');
-        dispatch(delProduct(id));
       }
     });
   };
@@ -165,57 +173,69 @@ const Product = () => {
                   isEditModalOk={isEditModalOk}
                 />
               </div>
-              <div className="grid__row">
-                {product.length === 0 ? (
-                  <div className="noItem">
-                    <div className="boxImg">
-                      <img
-                        src="https://prague.extranet-aec.com/img/empty-cart.png"
-                        alt=""
-                      />
+              {smallLoading ? (
+                <div className="loading">
+                  <PulseLoader loading={smallLoading} size={13} />
+                </div>
+              ) : (
+                <div className="grid__row">
+                  {product.length === 0 ? (
+                    <div className="noItem">
+                      <div className="boxImg">
+                        <img
+                          src="https://prague.extranet-aec.com/img/empty-cart.png"
+                          alt=""
+                        />
+                      </div>
+                      <div>Cửa hàng chưa có loại sản phẩm này</div>
                     </div>
-                    <div>Cửa hàng chưa có loại sản phẩm này</div>
-                  </div>
-                ) : (
-                  product
-                    .slice()
-                    .reverse()
-                    .map((item) => (
-                      <div key={item.id} className="grid__column24">
-                        <div className="home__productitems">
-                          <div
-                            className="home__productitemsimg"
-                            style={{
-                              backgroundImage: `url(${item.thumbnail})`,
-                            }}
-                          ></div>
-                          <h4 className="home__productitemsname">
-                            {item.name}
-                          </h4>
-                          <div className="ant-alerthome__productprice">
-                            <span className="ant-alerthome__productitemsprice">
-                              {FormatCash(item.sale_price.toString())} đ
-                            </span>
-                            <div className="ant-alertbtn_cart">
-                              <span
-                                className="btn__edit"
-                                onClick={() => editProduct(item.id)}
-                              >
-                                <i className="fas fa-pen"></i>
+                  ) : (
+                    product
+                      .slice()
+                      .reverse()
+                      .map((item) => (
+                        <div key={item.id} className="grid__column24">
+                          <div className="home__productitems">
+                            <div
+                              className="home__productitemsimg"
+                              style={{
+                                backgroundImage: `url(${item.thumbnail})`,
+                              }}
+                            ></div>
+                            <h4 className="home__productitemsname">
+                              {item.name}
+                            </h4>
+                            <div className="ant-alerthome__productprice">
+                              <span className="ant-alerthome__productitemsprice">
+                                {FormatCash(item.sale_price.toString())} đ
                               </span>
-                              <span
-                                className="btn__del"
-                                onClick={() => getProductId(item.id)}
-                              >
-                                <i className="fas fa-trash"></i>
-                              </span>
+                              <div className="ant-alertbtn_cart">
+                                <span
+                                  className="btn__edit"
+                                  onClick={() => editProduct(item.id)}
+                                >
+                                  <i className="fas fa-pen"></i>
+                                </span>
+                                <span
+                                  className="btn__del"
+                                  onClick={() =>
+                                    getProductId({
+                                      id: item.id,
+                                      categoryId: item?.category.id,
+                                      brandId: item?.brand.id,
+                                    })
+                                  }
+                                >
+                                  <i className="fas fa-trash"></i>
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    ))
-                )}
-              </div>
+                      ))
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>

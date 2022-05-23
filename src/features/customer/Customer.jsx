@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Customer.scss';
 import Header from '../../components/header/Header';
 import SlideBar from '../../components/slideBar/slideBar';
@@ -7,9 +7,15 @@ import { getListUser } from '../../utils/AdminSlice';
 import { Table, Space } from 'antd';
 import { delUser } from '../../utils/AdminSlice';
 import Swal from 'sweetalert2';
+import ClipLoader from 'react-spinners/ClipLoader';
 const Customer = () => {
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const listUser = useSelector((s) => s.admin.listUser) || [];
+
+  setTimeout(() => {
+    setLoading(false);
+  }, 1500);
 
   useEffect(() => {
     dispatch(getListUser());
@@ -75,20 +81,28 @@ const Customer = () => {
     },
   ];
   return (
-    <div className="container">
-      <div className="container__col3">
-        <SlideBar />
-      </div>
-      <div className="container__col7">
-        <Header />
-        <div className="container__customer">
-          <div className="container__customer__header">Customer</div>
-          <div className="container__customer__table">
-            <Table columns={columns} dataSource={listUser} />;
+    <React.Fragment>
+      {loading ? (
+        <div className="sweetLoading">
+          <ClipLoader loading={loading} size={50} />
+        </div>
+      ) : (
+        <div className="container">
+          <div className="container__col3">
+            <SlideBar />
+          </div>
+          <div className="container__col7">
+            <Header />
+            <div className="container__customer">
+              <div className="container__customer__header">Customer</div>
+              <div className="container__customer__table">
+                <Table columns={columns} dataSource={listUser} />;
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </React.Fragment>
   );
 };
 
