@@ -2,16 +2,19 @@ import React, { useEffect, useState } from 'react';
 import Header from '../../components/header/Header';
 import SlideBar from '../../components/slideBar/slideBar';
 import { useDispatch, useSelector } from 'react-redux';
-import { getListOrder } from '../../utils/AdminSlice';
+import { getListOrder, getProductDetail } from '../../utils/AdminSlice';
 import './Order.scss';
 import OrderModal from './OrderModal';
 import { Table, Tag, Space } from 'antd';
 import ClipLoader from 'react-spinners/ClipLoader';
+
 const Orders = () => {
   const dispatch = useDispatch();
   const listOrder = useSelector((s) => s.admin.listOrder) || [];
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loading, setLoading] = useState(true);
+  const productDetail = useSelector((s) => s.admin.productDetail) || {};
+  console.log(productDetail);
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -29,6 +32,7 @@ const Orders = () => {
   const getIdOrder = (id) => {
     setIsModalVisible(true);
     console.log(id);
+    dispatch(getProductDetail(id));
   };
   const column1s = [
     {
