@@ -1,19 +1,39 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, Select, Button } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
-import { getListBrand } from '../../utils/AdminSlice';
+import { useDispatch } from 'react-redux';
+import { updateStatus } from '../../utils/AdminSlice';
 import Swal from 'sweetalert2';
-const OrderModal = ({ isModalVisible, handleCancel = () => {} }) => {
+const OrderModal = ({
+  isModalVisible,
+  handleCancel = () => {},
+  orderDetail = {},
+}) => {
   const dispatch = useDispatch();
-  const brand = useSelector((s) => s.admin.listBrand) || [];
   const [form] = Form.useForm();
   const { Option } = Select;
-  const productDetail = useSelector((s) => s.admin.productDetail) || {};
-  console.log(productDetail);
+  const status = [
+    { id: 1, status: 'CONFIRM' },
+    { id: 2, status: 'WAITING_CONFIRM' },
+    { id: 3, status: 'SHIPPING' },
+  ];
+
+  useEffect(() => {
+    form.setFieldsValue({
+      name: orderDetail?.name,
+      address: orderDetail?.address,
+      phone_number: orderDetail?.phone_number,
+      shipping_fee: orderDetail?.shipping_fee,
+      total_cost: orderDetail?.total_cost,
+      status: orderDetail?.status,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orderDetail?.id]);
+
+  console.log(orderDetail?.id);
 
   const onFinish = (values) => {
-    // dispatch(addNewProduct(values));
-    // isAddModalClose();
+    dispatch(updateStatus({ values: values, id: orderDetail?.id }));
+    handleCancel();
     Swal.fire({
       position: 'center',
       icon: 'success',
@@ -21,13 +41,8 @@ const OrderModal = ({ isModalVisible, handleCancel = () => {} }) => {
       showConfirmButton: false,
       timer: 1500,
     });
-    form.resetFields();
   };
 
-  useEffect(() => {
-    dispatch(getListBrand());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   return (
     <Modal
       title="Edit Order"
@@ -70,7 +85,7 @@ const OrderModal = ({ isModalVisible, handleCancel = () => {} }) => {
             <div className="name">
               Phone: <span>*</span>
             </div>
-            <Form.Item name="category_id">
+            <Form.Item name="phone_number">
               <Input rows={4} />
             </Form.Item>
           </div>
@@ -78,11 +93,11 @@ const OrderModal = ({ isModalVisible, handleCancel = () => {} }) => {
             <div className="name">
               Status: <span>*</span>{' '}
             </div>
-            <Form.Item name="brand_id">
+            <Form.Item name="status">
               <Select showSearch>
-                {brand.map((item) => (
-                  <Option key={item.id} value={item.id}>
-                    {item.name}
+                {status.map((item) => (
+                  <Option key={item.id} value={item.status}>
+                    {item.status}
                   </Option>
                 ))}
               </Select>

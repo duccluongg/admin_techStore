@@ -77,6 +77,22 @@ function delUser(data) {
   });
 }
 
+function getOrderDetail(data) {
+  return axiosClient.get(URL.orderDetail + `/${data}`, {
+    headers: {
+      Authorization: `${localStorage.getItem(storageUser.TOKEN)}`,
+    },
+  });
+}
+
+function updateStatus(values, id) {
+  return axiosClient.put(URL.updateStatus + `/${id}`, values, {
+    headers: {
+      Authorization: `${localStorage.getItem(storageUser.TOKEN)}`,
+    },
+  });
+}
+
 function updateProduct(values, id) {
   return axiosClient.put(URL.updateProduct + `/${id}`, values, {
     headers: {
@@ -100,4 +116,6 @@ export default {
   updateProduct,
   delUser,
   getTotalProduct,
+  getOrderDetail,
+  updateStatus,
 };

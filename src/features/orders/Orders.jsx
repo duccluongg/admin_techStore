@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '../../components/header/Header';
 import SlideBar from '../../components/slideBar/slideBar';
 import { useDispatch, useSelector } from 'react-redux';
-import { getListOrder, getProductDetail } from '../../utils/AdminSlice';
+import { getListOrder, getOrderDetail } from '../../utils/AdminSlice';
 import './Order.scss';
 import OrderModal from './OrderModal';
 import { Table, Tag, Space } from 'antd';
@@ -13,8 +13,7 @@ const Orders = () => {
   const listOrder = useSelector((s) => s.admin.listOrder) || [];
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loading, setLoading] = useState(true);
-  const productDetail = useSelector((s) => s.admin.productDetail) || {};
-  console.log(productDetail);
+  const orderDetail = useSelector((s) => s.admin.orderDetail) || {};
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -31,8 +30,7 @@ const Orders = () => {
 
   const getIdOrder = (id) => {
     setIsModalVisible(true);
-    console.log(id);
-    dispatch(getProductDetail(id));
+    dispatch(getOrderDetail(id));
   };
   const column1s = [
     {
@@ -99,6 +97,7 @@ const Orders = () => {
               <div className="container__order__table">
                 <Table columns={column1s} dataSource={listOrder} />;
                 <OrderModal
+                  orderDetail={orderDetail}
                   handleCancel={handleCancel}
                   isModalVisible={isModalVisible}
                 />

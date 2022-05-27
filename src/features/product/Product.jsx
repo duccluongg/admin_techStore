@@ -29,11 +29,13 @@ const Product = () => {
   const category = useSelector((s) => s.admin.listCategory) || [];
   const brand = useSelector((s) => s.admin.listBrand) || [];
   const product = useSelector((s) => s.admin.listProduct) || [];
+  const testLoading = useSelector((s) => s.admin.loading);
   const [brandId, setBrandId] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const navigate = useNavigate();
   const [addModal, setAddModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  console.log(testLoading);
 
   const showAddModal = () => {
     setAddModal(true);
@@ -89,10 +91,7 @@ const Product = () => {
 
   useEffect(() => {
     dispatch(getListProduct({ categoryId, brandId }));
-    setSmallLoading(true);
-    setTimeout(() => {
-      setSmallLoading(false);
-    }, 500);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId, brandId]);
 
@@ -173,9 +172,9 @@ const Product = () => {
                   isEditModalOk={isEditModalOk}
                 />
               </div>
-              {smallLoading ? (
+              {testLoading ? (
                 <div className="loading">
-                  <PulseLoader loading={smallLoading} size={13} />
+                  <PulseLoader loading={testLoading} size={13} />
                 </div>
               ) : (
                 <div className="grid__row">

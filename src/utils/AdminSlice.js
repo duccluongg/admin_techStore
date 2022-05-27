@@ -148,6 +148,34 @@ export const updateProduct = createAsyncThunk(
     }
   }
 );
+export const updateStatus = createAsyncThunk(
+  'delProduct',
+  async ({ values, id }, { rejectWithValue, dispatch }) => {
+    try {
+      console.log(values, id);
+      const response = await adminApi.updateStatus(values, id);
+      dispatch(getListOrder());
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getOrderDetail = createAsyncThunk(
+  'delProduct',
+  async (payload, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await adminApi.getOrderDetail(payload);
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 const adminSlice = createSlice({
   name: 'auth',
@@ -159,7 +187,9 @@ const adminSlice = createSlice({
     listBrand: [],
     newProduct: {},
     productDetail: {},
+    orderDetail: {},
     totalProduct: '',
+    loading: false,
   },
   reducers: {
     clearState: (state) => {
@@ -190,9 +220,11 @@ const adminSlice = createSlice({
       state.status = 'getListOrder.rejected';
     },
     [getListProduct.pending]: (state) => {
+      state.loading = true;
       state.status = 'getListProduct.pending';
     },
     [getListProduct.fulfilled]: (state, { payload }) => {
+      state.loading = false;
       state.listProduct = payload;
       state.status = 'getListProduct.fullfilled';
     },
@@ -255,6 +287,17 @@ const adminSlice = createSlice({
     [addNewProduct.rejected]: (state, { payload }) => {
       state.errorMessage = 'bị lỗi';
       state.status = 'addNewProduct.rejected';
+    },
+    [getOrderDetail.pending]: (state) => {
+      state.status = 'getOrderDetail.pending';
+    },
+    [getOrderDetail.fulfilled]: (state, { payload }) => {
+      state.orderDetail = payload;
+      state.status = 'getOrderDetail.fullfilled';
+    },
+    [getOrderDetail.rejected]: (state, { payload }) => {
+      state.errorMessage = 'bị lỗi';
+      state.status = 'getOrderDetail.rejected';
     },
   },
 });
