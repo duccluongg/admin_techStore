@@ -96,6 +96,7 @@ export const addNewProduct = createAsyncThunk(
   async (payload, { rejectWithValue, dispatch }) => {
     const categoryId = payload.category_id;
     const brandId = payload.brand_id;
+    console.log(categoryId, brandId);
     try {
       const response = await adminApi.addNewProduct(payload);
       dispatch(getListProduct({ categoryId, brandId }));
@@ -136,10 +137,10 @@ export const delUser = createAsyncThunk(
 );
 
 export const updateProduct = createAsyncThunk(
-  'delProduct',
+  'updateProduct',
   async ({ values, id }, { rejectWithValue, dispatch }) => {
+    console.log(values, id);
     try {
-      console.log(values, id);
       const response = await adminApi.updateProduct(values, id);
       return response.data;
     } catch (error) {
@@ -278,15 +279,30 @@ const adminSlice = createSlice({
       state.status = 'getProductDetail.rejected';
     },
     [addNewProduct.pending]: (state) => {
+      state.loading = true;
       state.status = 'addNewProduct.pending';
     },
     [addNewProduct.fulfilled]: (state, { payload }) => {
+      state.loading = false;
       state.newProduct = payload;
       state.status = 'addNewProduct.fullfilled';
     },
     [addNewProduct.rejected]: (state, { payload }) => {
       state.errorMessage = 'bị lỗi';
       state.status = 'addNewProduct.rejected';
+    },
+
+    [delProduct.pending]: (state) => {
+      state.loading = true;
+      state.status = 'delProduct.pending';
+    },
+    [delProduct.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.status = 'delProduct.fullfilled';
+    },
+    [delProduct.rejected]: (state, { payload }) => {
+      state.errorMessage = 'bị lỗi';
+      state.status = 'delProduct.rejected';
     },
     [getOrderDetail.pending]: (state) => {
       state.status = 'getOrderDetail.pending';

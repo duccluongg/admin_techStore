@@ -176,6 +176,7 @@
   display: flex;
   justify-content: space-between;
   margin: 0px 30px 0px 16px;
+  align-items: center;
 }
 
 .container__col7__box__select {
@@ -234,5 +235,25 @@
     display: block;
     width: 20px;
     margin-right: 10px;
+  }
+}
+
+@media screen and (max-width: 1366px) {
+  .ant-alerthome__productprice {
+    margin: 0px 10px 0px 9px !important;
+  }
+  .ant-alerthome__productitemsprice {
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .ant-alertbtn_cart {
+    margin-left: 10px;
+    .btn__edit,
+    .btn__del {
+      font-size: 12px;
+    }
+  }
+  .home__productitemsname {
+    padding: 0px 8px;
   }
 }

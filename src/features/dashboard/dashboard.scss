@@ -1,12 +1,16 @@
 .container {
   height: 100%;
   &__col3 {
+    width: 20%;
     .ant-layout-sider {
       min-height: 100vh;
+      max-width: 100% !important;
+      min-width: 100% !important;
+      width: 100% !important;
     }
   }
   &__col7 {
-    width: 87%;
+    width: 80%;
   }
 }
 .ant-layout-sider {
@@ -110,11 +114,19 @@
   padding: 30px;
   background-color: #fff;
   margin-right: 30px;
+  overflow-x: scroll;
+  // width: 50%;
   &__name {
     font-size: 20px;
     margin-bottom: 10px;
     font-weight: 500;
   }
+}
+.box__row__table__order {
+  width: 60%;
+}
+.box__row__table__costumers {
+  width: 40%;
 }
 
 .sweetLoading {

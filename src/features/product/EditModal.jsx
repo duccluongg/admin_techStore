@@ -32,7 +32,6 @@ const EditModal = ({ showEditModal, isEditModalOk = () => {} }) => {
   }, [productDetail?.id]);
 
   const onFinish = (values) => {
-    console.log('hi');
     dispatch(updateProduct({ values: values, id: productDetail?.id }));
     isEditModalOk();
     Swal.fire({

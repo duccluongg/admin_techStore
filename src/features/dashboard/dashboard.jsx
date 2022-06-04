@@ -58,14 +58,14 @@ const Dashboard = () => {
       key: 'role',
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
       title: 'Phone',
       dataIndex: 'phone_number',
       key: 'phone_number',
+    },
+    {
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address',
     },
   ];
   const column1s = [
