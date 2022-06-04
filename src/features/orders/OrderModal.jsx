@@ -12,9 +12,9 @@ const OrderModal = ({
   const [form] = Form.useForm();
   const { Option } = Select;
   const status = [
-    { id: 1, status: 'CONFIRM' },
-    { id: 2, status: 'WAITING_CONFIRM' },
-    { id: 3, status: 'SHIPPING' },
+    { id: 1, status: 'confirmed' },
+    { id: 2, status: 'waiting_confirm' },
+    { id: 3, status: 'shipping' },
   ];
 
   useEffect(() => {
