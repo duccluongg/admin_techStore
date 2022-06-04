@@ -10,7 +10,8 @@ import ClipLoader from 'react-spinners/ClipLoader';
 
 const Orders = () => {
   const dispatch = useDispatch();
-  const listOrder = useSelector((s) => s.admin.listOrder) || [];
+  const listOrder1 = useSelector((s) => s.admin.listOrder) || [];
+  const listOrder = listOrder1.slice().reverse();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loading, setLoading] = useState(true);
   const orderDetail = useSelector((s) => s.admin.orderDetail) || {};
