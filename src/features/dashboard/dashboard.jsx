@@ -5,14 +5,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import './dashboard.scss';
 import storageUser from '../../constants/storageUser';
 import { useNavigate } from 'react-router-dom';
+import Chart from "react-apexcharts";
 import {
   getListOrder,
   getListUser,
   getTotalProduct,
 } from '../../utils/AdminSlice';
 import ClipLoader from 'react-spinners/ClipLoader';
-
 import { Table } from 'antd';
+import {Line} from 'react-chartjs-2';
 const Dashboard = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -40,6 +41,8 @@ const Dashboard = () => {
       navigate('/login');
     }
   });
+ 
+
 
   const columns = [
     {
@@ -62,11 +65,11 @@ const Dashboard = () => {
       dataIndex: 'phone_number',
       key: 'phone_number',
     },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
+    // {
+    //   title: 'Address',
+    //   dataIndex: 'address',
+    //   key: 'address',
+    // },
   ];
   const column1s = [
     {
@@ -80,11 +83,11 @@ const Dashboard = () => {
       dataIndex: 'phone_number',
       key: 'phone_number',
     },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
+    // {
+    //   title: 'Address',
+    //   dataIndex: 'address',
+    //   key: 'address',
+    // },
     {
       title: 'Shipping Fee',
       dataIndex: 'shipping_fee',
@@ -101,7 +104,24 @@ const Dashboard = () => {
       key: 'status',
     },
   ];
-  useEffect(() => {}, []);
+  
+  const state = {
+    options: {
+      chart: {
+        id: "basic-bar"
+      },
+      xaxis: {
+        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+      }
+    },
+    series: [
+      {
+        name: "series-1",
+        data: [30, 40, 45, 50, 49, 60, 70, 91]
+      }
+    ]
+  };
+
 
   return (
     <React.Fragment>
@@ -170,20 +190,30 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-                </div>
+                  </div>
+                  <div className='row__col6'>
+                    <Chart
+                      className='row__col6__chart'
+              options={state.options}
+              series={state.series}
+              type="line"
+              width="470"
+            />
+                  </div>
+                
               </div>
               <div className="container__col7__box__row">
                 <div className="box__row__table__costumers">
                   <div className="box__row__table__costumers__name">
                     Customers
                   </div>
-                  <Table columns={columns} dataSource={listUser} />;
+                  <Table pagination={{ pageSize: 5 }} columns={columns} dataSource={listUser} />;
                 </div>
                 <div className="box__row__table__order">
                   <div className="box__row__table__costumers__name">
                     List Order
                   </div>
-                  <Table columns={column1s} dataSource={listOrder} />;
+                  <Table pagination={{ pageSize: 5 }} columns={column1s} dataSource={listOrder} />;
                 </div>
               </div>
             </div>
